@@ -3,9 +3,11 @@ use bevy_ecss::{prelude::*, EcssError, Property, PropertyValues};
 
 fn main() {
     let mut app = App::new();
-    app.add_plugins(DefaultPlugins)
-        .add_plugin(EcssPlugin::default())
-        .add_startup_system(setup);
+    app.add_plugins((
+            DefaultPlugins,
+            EcssPlugin::default(),
+        ))
+        .add_systems(Startup, setup);
 
     app.register_property::<AlphaProperty>();
 
@@ -18,7 +20,8 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn(NodeBundle {
             style: Style {
-                size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
+                width: Val::Percent(100.0),
+                height: Val::Percent(100.0),
                 justify_content: JustifyContent::SpaceBetween,
                 ..default()
             },
@@ -30,7 +33,8 @@ fn setup(mut commands: Commands, asset_server: Res<AssetServer>) {
             // bevy logo (image)
             parent.spawn(ImageBundle {
                 style: Style {
-                    size: Size::new(Val::Auto, Val::Auto),
+                    width: Val::Auto,
+                    height: Val::Auto,
                     ..default()
                 },
                 image: asset_server.load("branding/bevy_logo_dark_big.png").into(),
